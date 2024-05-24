@@ -1,5 +1,4 @@
 package service;
-
 import exception.CourseNotFound;
 import exception.NumValidate;
 import exception.StringValidate;
@@ -23,50 +22,51 @@ public class CourseServiceImp implements CourseService {
             throw new StringValidate(" Invalid input. Numbers are not allowed.");
         }
     }
-
     @Override
     public void addNewCourse() {
         String title = "";
         String[] instructorNames;
         String[] requirements;
-        Scanner sc = new Scanner(System.in);
         while (true) {
             try {
-                System.out.print("-> Enter Course Title : ");
+                System.out.print("-> Enter Course Title: ");
                 title = sc.nextLine();
                 validateString(title);
+                break;
             } catch (StringValidate e) {
                 System.out.println(e.getMessage());
             }
         }
         while (true) {
             try {
-                System.out.println("-> Enter instruction : ");
+                System.out.print("-> Enter Instructors : ");
                 instructorNames = sc.nextLine().split(",");
                 for (String instructorName : instructorNames) {
                     validateString(instructorName.trim());
                 }
+                break;
             } catch (StringValidate e) {
                 System.out.println(e.getMessage());
             }
-            while (true) {
-                try {
-                    System.out.println("-> Enter requirement : ");
-                    requirements = sc.nextLine().split(",");
-                    for (String requirement : requirements) {
-                        validateString(requirement.trim());
-                    }
-                } catch (StringValidate e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-
-            int id = CourseRepo.generateUniqueId();
-            Date startDate = new Date();
-            Course newCourse = new Course(id,title,instructorNames,requirements,startDate);
-            CourseRepo.addNewCourse(newCourse);
-            System.out.println("New course added successfully!");
         }
+        while (true) {
+            try {
+                System.out.print("-> Enter Requirements : ");
+                requirements = sc.nextLine().split(",");
+                for (String requirement : requirements) {
+                    validateString(requirement.trim());
+                }
+                break;
+            } catch (StringValidate e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        int id = CourseRepo.generateUniqueId();
+        Date startDate = new Date();
+        Course newCourse = new Course(id, title, instructorNames, requirements, startDate);
+        CourseRepo.addNewCourse(newCourse);
+        System.out.println("New course added successfully!");
     }
 
     @Override
@@ -102,7 +102,7 @@ public class CourseServiceImp implements CourseService {
         }
     }
     @Override
-    public void findById() {
+    public void findById() throws NumValidate {
         if (CourseRepo.getAllCourses().isEmpty()) {
             System.out.println("No courses available to search.");
             return;
@@ -220,17 +220,15 @@ public class CourseServiceImp implements CourseService {
 
                 if (confirmation.equals("yes") || confirmation.equals("y")) {
                     CourseRepo.removeCourseById(courseId);
-                    System.out.println(" Course has been removed successfully.");
+                    System.out.println("Course has been removed successfully.");
                 } else {
                     System.out.println("Course deletion cancelled.");
                 }
             } else {
                 System.out.println("⚠️ No course found with ID " + courseId );
-
             }
         } catch (NumValidate e) {
             System.out.println(e.getMessage());
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

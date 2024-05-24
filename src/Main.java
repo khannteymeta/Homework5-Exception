@@ -1,10 +1,12 @@
 import View.Menu;
 import java.util.Scanner;
+
+import exception.NumValidate;
 import service.CourseServiceImp;
 import service.CourseService;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NumValidate {
         Scanner sc = new Scanner(System.in);
         boolean exit = false;
         while (!exit) {
@@ -42,7 +44,6 @@ public class Main {
                     break;
                 }
             }
-
         }
     }
 }
